@@ -1,0 +1,29 @@
+{
+  "name": "kahoot-search",
+  "version": "1.0.0",
+  "description": "An API to search kahoot",
+  "main": "search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theusaf/kahoot-search.git"
+  },
+  "keywords": [
+    "kahoot",
+    "search",
+    "quiz",
+    "game",
+    "api"
+  ],
+  "author": "theusaf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theusaf/kahoot-search/issues"
+  },
+  "homepage": "https://github.com/theusaf/kahoot-search#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
