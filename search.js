@@ -91,18 +91,22 @@ class Search{
       const data = `${me.config.author ? encodeURIComponent(" " + me.config.author) : ""}&cursor=${me.config.cursor}&limit=${me.config.limit}&orderBy=${me.config.order}&usage=${encodeURIComponent(this.config.usage.join(","))}&type=${encodeURIComponent(this.config.type.join(","))}&language=${encodeURIComponent(this.config.language.join(","))}${me.config.includeKahoot ? "&includeKahoot=" + true : ""}`;
       request(`https://create.kahoot.it/rest/kahoots?query=${encodeURIComponent(me.config.query)}${data}`,(e,r,b)=>{
         var response = JSON.parse(b).entities;
-        response = response.filter(o=>{
-          if(me.config.questionLength && me.config.questionLength != o.kahoot.questions.length){
-            return false;
-          }
-          if(me.config.author && me.config.author != o.kahoot.creator_username){
-            return false;
-          }
-          if(me.config.searchStrictly && me.config.query != o.kahoot.title){
-            return false;
-          }
-          return true;
-        });
+        try{
+          response = response.filter(o=>{
+            if(me.config.questionLength && me.config.questionLength != o.kahoot.questions.length){
+              return false;
+            }
+            if(me.config.author && me.config.author != o.kahoot.creator_username){
+              return false;
+            }
+            if(me.config.searchStrictly && me.config.query != o.kahoot.title){
+              return false;
+            }
+            return true;
+          });
+        }catch(err){
+          return res([]);
+        }
         f ? (()=>{response = response.filter(f)})() : null;
         res(me.config.includeKahoot ? (
           me.config.includeCard ? (
