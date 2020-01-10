@@ -90,7 +90,13 @@ class Search{
       //create extra information.
       const data = `${me.config.author ? encodeURIComponent(" " + me.config.author) : ""}&cursor=${me.config.cursor}&limit=${me.config.limit}&orderBy=${me.config.order}&usage=${encodeURIComponent(this.config.usage.join(","))}&type=${encodeURIComponent(this.config.type.join(","))}&language=${encodeURIComponent(this.config.language.join(","))}${me.config.includeKahoot ? "&includeKahoot=" + true : ""}`;
       request(`https://create.kahoot.it/rest/kahoots?query=${encodeURIComponent(me.config.query)}${data}`,(e,r,b)=>{
-        var response = JSON.parse(b).entities;
+        var response;
+        try{
+          response = JSON.parse(b).entities;
+        }catch(err){
+          console.log("Kahoot Search: Error parsing data. Likely DDOS protection occured.");
+          return res([]);
+        }
         try{
           response = response.filter(o=>{
             if(me.config.questionLength && me.config.questionLength != o.kahoot.questions.length){
