@@ -94,8 +94,8 @@ class Search{
         try{
           response = JSON.parse(b).entities;
         }catch(err){
-          console.log("Kahoot Search: Error parsing data. Likely DDOS protection occured.");
-          return res([]);
+          // console.log("Kahoot Search: Error parsing data. Likely DDOS protection occured.");
+          return rej([]);
         }
         try{
           response = response.filter(o=>{
@@ -114,7 +114,7 @@ class Search{
           return res([]);
         }
         f ? (()=>{response = response.filter(f)})() : null;
-        res(me.config.includeKahoot ? (
+        const final = me.config.includeKahoot ? (
           me.config.includeCard ? (
             response
           ) : (
@@ -128,7 +128,9 @@ class Search{
           )
         ) : (
           response
-        ));
+        );
+        final.totalHits = JSON.parse(b).totalHits;
+        res(final);
       });
     });
   }

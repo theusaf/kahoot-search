@@ -2,7 +2,7 @@ const path = require('path');
 const search = require(path.join(__dirname,"..","search.js"));
 const config = {
   cursor: 0,
-  limit: 100,
+  limit: 25,
   order: null,
   usage: [],
   type: [],
@@ -18,4 +18,7 @@ s.search(o=>{
   return o.kahoot.created == 1478116535317;
 }).then(d=>{
   console.log(d);
+}).catch(e=>{
+  console.log("err");
+  console.log(e);
 });
