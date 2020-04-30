@@ -1,6 +1,6 @@
 {
   "name": "kahoot-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An API to search kahoot",
   "main": "search.js",
   "scripts": {
@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/theusaf/kahoot-search#readme",
   "dependencies": {
-    "request": "^2.88.0"
+    "request": "^2.88.2"
   }
 }

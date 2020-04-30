@@ -13,7 +13,9 @@ class Search{
       author: null,
       includeKahoot: true,
       includeCard: false,
-      searchStrictly: false
+      searchStrictly: false,
+      grades: [],
+      topics: []
     }
     const languages = {
       sq: "Albanian",
@@ -88,7 +90,18 @@ class Search{
     var me = this;
     return new Promise((res,rej)=>{
       //create extra information.
-      const data = `${me.config.author ? encodeURIComponent(" " + me.config.author) : ""}&cursor=${me.config.cursor}&limit=${me.config.limit}&orderBy=${me.config.order}&usage=${encodeURIComponent(this.config.usage.join(","))}&type=${encodeURIComponent(this.config.type.join(","))}&language=${encodeURIComponent(this.config.language.join(","))}${me.config.includeKahoot ? "&includeKahoot=" + true : ""}`;
+      const data = `${me.config.author ? "&creator=" + encodeURIComponent(me.config.author) : ""}&cursor=${me.config.cursor}&limit=${me.config.limit}&orderBy=${me.config.order}&usage=${encodeURIComponent(this.config.usage.join(","))}&type=${encodeURIComponent(this.config.type.join(","))}&language=${encodeURIComponent(this.config.language.join(","))}${me.config.includeKahoot ? "&includeKahoot=" + true : ""}${this.config.grades.length ? "&grades=" + (()=>{
+        const grades = this.config.grades;
+        let tmp = [];
+        for(let i = 0;i<grades.length;i++){
+          if(String(grades[i]).length < 2){
+            tmp.push("grade_0" + grades[i]);
+          }else{
+            tmp.push("grade_" + grades[i]);
+          }
+        }
+        return encodeURIComponent(tmp.join(","));
+      })() : ""}${this.config.topics.length ? "&topics=" + encodeURIComponent(topics.join(",")) : ""}`;
       request(`https://create.kahoot.it/rest/kahoots?query=${encodeURIComponent(me.config.query)}${data}`,(e,r,b)=>{
         var response;
         try{
@@ -100,9 +113,6 @@ class Search{
         try{
           response = response.filter(o=>{
             if(me.config.questionLength && me.config.questionLength != o.kahoot.questions.length){
-              return false;
-            }
-            if(me.config.author && me.config.author != o.kahoot.creator_username){
               return false;
             }
             if(me.config.searchStrictly && me.config.query != o.kahoot.title){
